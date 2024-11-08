@@ -29,19 +29,19 @@ async def loop():
     # 現在の時刻を取得
     now = datetime.now().strftime('%H:%M')
 
-    # # 現在時刻が9時ならメッセージを送る
-    # if now == '09:00':
-    problem_url = await get_ACproblem()
+    # 現在時刻が9時ならメッセージを送る
+    if now == '09:00':
+        problem_url = await get_ACproblem()
 
-    print(problem_url)
+        print(problem_url)
 
 
 
-    channel = client.get_channel(CHANNEL_ID)
-    if channel == None:
-        print(f"チャンネルID {CHANNEL_ID} が見つかりませんでした。")
-        return 
-    messege = '今日の1問\n' + problem_url
-    await channel.send(messege)
+        channel = client.get_channel(CHANNEL_ID)
+        if channel == None:
+            print(f"チャンネルID {CHANNEL_ID} が見つかりませんでした。")
+            return 
+        messege = '今日の1問\n' + problem_url
+        await channel.send(messege)
 
 client.run(ACCESS_TOKEN)
