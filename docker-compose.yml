@@ -1,0 +1,14 @@
+services:
+  bot:
+    # . は現在docker-compose.yamlと同じディレクトリのDockerfileを指しています。
+    # 複数のイメージを使う場合などは./botなどディレクトリを指定します。
+    build: .
+    volumes:
+      - .:/app:rw
+    platform: linux/x86_64 # M1以降のMacはこれを追加
+    environment:
+      # ${}で囲んだものは.envファイルから環境変数を取得する
+      - ACCESS_TOKEN=${ACCESS_TOKEN}
+      - CHANNEL_ID=${CHANNEL_ID}
+    command: ["python3", "main.py"]
+    tty: true
