@@ -1,7 +1,8 @@
 from bs4 import BeautifulSoup
-from playwright.async_api import async_playwright  # Playwrightの非同期APIをインポート
+from playwright.async_api import async_playwright
 import random
 import asyncio
+import re
 
 ACproblems_url = "https://kenkoooo.com/atcoder/#/table/"
 
@@ -26,13 +27,17 @@ async def get_ACproblem() -> list[str]:
         soup = BeautifulSoup(content, 'html.parser')
 
         trs_with_class = soup.find_all(class_="table-problem")
-
         problem_links = []
         for row in trs_with_class:
             temp = row.find('a')
             if temp == None:
                 continue
-            problem_url = row.find('a').get('href')
-            problem_links.append(problem_url)
+            problem_url = temp.get('href')
+            if re.search(r'abc\d{3}_[1234abcd]', problem_url):
+                print(problem_url)
+                problem_links.append(problem_url)
 
     return random.choice(problem_links)
+
+if __name__ == '__main__':
+    asyncio.run(get_ACproblem())
