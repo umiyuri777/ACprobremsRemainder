@@ -35,12 +35,10 @@ async def loop():
 
         print(problem_url)
 
-
-
         channel = client.get_channel(CHANNEL_ID)
         if channel == None:
             print(f"チャンネルID {CHANNEL_ID} が見つかりませんでした。")
-            return 
+            return
         messege = '今日の1問\n' + problem_url
         await channel.send(messege)
 
