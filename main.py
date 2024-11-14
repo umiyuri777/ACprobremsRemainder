@@ -17,7 +17,7 @@ client = discord.Client(intents=discord.Intents.all())
 @client.event
 async def on_ready():
     print('{0.user}にログインしました。'.format(client))
-    await client.change_presence(status=discord.Status.online, activity=discord.Game('!observation'))
+    await client.change_presence(status=discord.Status.online, activity=discord.Game('AC Problems'))
 
     loop.start()
 
