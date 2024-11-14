@@ -33,11 +33,20 @@ async def get_ACproblem() -> list[str]:
             if temp == None:
                 continue
             problem_url = temp.get('href')
-            if re.search(r'abc\d{3}_[1234abcd]', problem_url):
+            if check_string(problem_url):
                 print(problem_url)
                 problem_links.append(problem_url)
 
     return random.choice(problem_links)
 
-if __name__ == '__main__':
-    asyncio.run(get_ACproblem())
+def check_string(input_string):
+    # 正規表現パターン: "abc" + 3桁の数字 (217以上) + "_" + b, c, d のいずれか
+    pattern = r'abc(\d{3})_([bcd])'
+    
+    matches = re.finditer(pattern, input_string)
+    for match in matches:
+        number = int(match.group(1))
+        letter = match.group(2)
+        if number >= 214 and letter in 'bcd':
+            return True
+    return False
