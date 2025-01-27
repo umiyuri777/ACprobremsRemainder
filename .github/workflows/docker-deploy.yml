@@ -28,9 +28,13 @@ jobs:
           # GitHub Secretsからユーザー名とパスワードを取得。
           username: ${{ secrets.ACR_USERNAME }}
           password: ${{ secrets.ACR_PASSWORD }}
-
+      - name: Set environment variables
+        run: |
+          echo "ACCESS_TOKEN=${{ secrets.ACCESS_TOKEN }}" >> $GITHUB_ENV
+          echo "CHANNEL_ID=${{ secrets.CHANNEL_ID }}" >> $GITHUB_ENV
       # ここでDockerイメージのビルドとACRへのプッシュする。
       - name: Build and push Docker image
         run: |
-          docker compose build --no-cache acreminder.azurecr.io/acreminder:${{ github.sha }}
+          docker-compose build --no-cache
+          docker tag acreminder.azurecr.io/acreminder:${{ github.sha }}
           docker push acreminder.azurecr.io/acreminder:${{ github.sha }}
