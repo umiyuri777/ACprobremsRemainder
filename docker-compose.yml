@@ -2,6 +2,7 @@ services:
   bot:
     # . は現在docker-compose.yamlと同じディレクトリのDockerfileを指しています。
     # 複数のイメージを使う場合などは./botなどディレクトリを指定します。
+    image: acreminder
     build: .
     volumes:
       - .:/app:rw

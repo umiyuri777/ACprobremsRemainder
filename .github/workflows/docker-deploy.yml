@@ -36,4 +36,5 @@ jobs:
       - name: Build and push Docker image
         run: |
           docker compose build --no-cache
+          docker tag acreminder acreminder.azurecr.io/acreminder:${{ github.sha }}
           docker push acreminder.azurecr.io/acreminder:${{ github.sha }}
