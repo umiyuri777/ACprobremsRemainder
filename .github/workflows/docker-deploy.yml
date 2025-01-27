@@ -32,5 +32,5 @@ jobs:
       # ここでDockerイメージのビルドとACRへのプッシュする。
       - name: Build and push Docker image
         run: |
-          ddocker compose build --no-cache acreminder.azurecr.io/acreminder:${{ github.sha }}
+          docker compose build --no-cache acreminder.azurecr.io/acreminder:${{ github.sha }}
           docker push acreminder.azurecr.io/acreminder:${{ github.sha }}
