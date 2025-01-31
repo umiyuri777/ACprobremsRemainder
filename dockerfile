@@ -4,15 +4,16 @@ FROM python:3.9-slim
 # 作業ディレクトリを設定
 WORKDIR /app
 
-# Playwrightをインストール
-RUN playwright install
-RUN playwright install-deps
 
 # 必要なファイルをコンテナにコピー
 COPY requirements.txt ./
 
 # 依存関係をインストール
 RUN pip install --no-cache-dir -r requirements.txt
+
+# Playwrightをインストール
+RUN playwright install
+RUN playwright install-deps
 
 # ファイルをコンテナにコピー
 COPY . .
