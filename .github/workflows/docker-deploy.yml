@@ -23,18 +23,26 @@ jobs:
         uses: docker/login-action@v2
         with:
           # ACRのドメインを指定。
-          #※AzureでACRを事前に作っておく。
           registry: acreminder.azurecr.io
           # GitHub Secretsからユーザー名とパスワードを取得。
           username: ${{ secrets.ACR_USERNAME }}
           password: ${{ secrets.ACR_PASSWORD }}
-      - name: Set environment variables
-        run: |
-          echo "ACCESS_TOKEN=${{ secrets.ACCESS_TOKEN }}" >> $GITHUB_ENV
-          echo "CHANNEL_ID=${{ secrets.CHANNEL_ID }}" >> $GITHUB_ENV
       # ここでDockerイメージのビルドとACRへのプッシュする。
       - name: Build and push Docker image
         run: |
           docker compose build
           docker tag acreminder acreminder.azurecr.io/acreminder
           docker push acreminder.azurecr.io/acreminder
+
+      # Azure Container Instancesにデプロイする
+      - name: Deploy to Azure Container Instances
+        uses: 'azure/aci-deploy@v1'
+        with:
+          resource-group: ${{ secrets.RESOURCE_GROUP }}
+          dns-name-label: ${{ secrets.RESOURCE_GROUP }}${{ github.run_number }}
+          image: ${{ secrets.REGISTRY_LOGIN_SERVER }}/acreminder:latest
+          registry-login-server: ${{ secrets.REGISTRY_LOGIN_SERVER }}
+          registry-username: ${{ secrets.REGISTRY_USERNAME }}
+          registry-password: ${{ secrets.REGISTRY_PASSWORD }}
+          name: acreminder
+          location: 'japanwest'

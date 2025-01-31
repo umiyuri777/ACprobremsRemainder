@@ -36,11 +36,9 @@ async def loop():
     # 現在の時刻を取得
     now = datetime.now(JST).strftime('%H:%M')
 
-    # 現在時刻が9時ならメッセージを送る
+    # 現在時刻が12時ならメッセージを送る
     if now == '12:00':
         problem_url = await get_ACproblem()
-
-        print(problem_url)
 
         channel = client.get_channel(CHANNEL_ID)
         if channel == None:
