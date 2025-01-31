@@ -2,15 +2,20 @@ import discord
 from dotenv import load_dotenv
 import os
 from discord.ext import tasks
-from datetime import datetime 
+from datetime import datetime, time, timedelta, timezone
 from get_ACproblem import get_ACproblem
 from keep_alive import keep_alive
-
 
 load_dotenv()
 
 ACCESS_TOKEN = os.environ['ACCESS_TOKEN']
 CHANNEL_ID = int(os.environ['CHANNEL_ID'])
+
+# タイムゾーンを設定
+JST = timezone(timedelta(hours=+9), "JST")
+times = [
+	time(hour=20, minute=0, tzinfo=JST)
+]
 
 # 接続に必要なオブジェクトを追加
 client = discord.Client(intents=discord.Intents.all())
@@ -23,16 +28,16 @@ async def on_ready():
 
     loop.start()
 
-@tasks.loop(seconds=30)
+@tasks.loop(time=times)
 async def loop():
     # botが起動するまで待つ
     await client.wait_until_ready()
 
     # 現在の時刻を取得
-    now = datetime.now().strftime('%H:%M')
+    now = datetime.now(JST).strftime('%H:%M')
 
     # 現在時刻が9時ならメッセージを送る
-    if now == '09:00':
+    if now == '12:00':
         problem_url = await get_ACproblem()
 
         print(problem_url)
