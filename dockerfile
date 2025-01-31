@@ -14,8 +14,8 @@ RUN pip install --no-cache-dir -r requirements.txt
 RUN playwright install
 RUN playwright install-deps
 
-# # ファイルをコンテナにコピー
-# COPY . .
+# ファイルをコンテナにコピー
+COPY . .
 
 # # 実行コマンド
 # CMD ["python", "main.py"]

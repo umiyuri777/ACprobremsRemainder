@@ -4,8 +4,6 @@ services:
     # 複数のイメージを使う場合などは./botなどディレクトリを指定します。
     image: acreminder
     build: .
-    volumes:
-      - .:/app:rw
     platform: linux/x86_64 # M1以降のMacはこれを追加
     environment:
       # ${}で囲んだものは.envファイルから環境変数を取得する
