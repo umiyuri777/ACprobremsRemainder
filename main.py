@@ -4,6 +4,8 @@ import os
 from discord.ext import tasks
 from datetime import datetime 
 from get_ACproblem import get_ACproblem
+from keep_alive import keep_alive
+
 
 load_dotenv()
 
@@ -42,4 +44,5 @@ async def loop():
         messege = '今日の1問\n' + problem_url
         await channel.send(messege)
 
+keep_alive()
 client.run(ACCESS_TOKEN)

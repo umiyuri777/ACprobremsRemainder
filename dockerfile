@@ -17,5 +17,8 @@ RUN playwright install-deps
 # ファイルをコンテナにコピー
 COPY . .
 
+# ポートを公開
+EXPOSE 8080
+
 # 実行コマンド
 CMD ["python3", "main.py"]
