@@ -17,5 +17,5 @@ RUN playwright install-deps
 # ファイルをコンテナにコピー
 COPY . .
 
-# # 実行コマンド
-# CMD ["python", "main.py"]
+# 実行コマンド
+CMD ["python3", "main.py"]
