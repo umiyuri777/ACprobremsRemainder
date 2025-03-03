@@ -1,11 +1,15 @@
 # パイプライン名。GitHub Actionsのタブで一覧表示される時にこの名前が出る
-name: CI to Azure Container Registry
+name: CI to Azure Container Registry and CD to Azure Container Instances
 
 # ワークフローが実行されるトリガー条件。
 # mainブランチへのpushしたときに発動させてる
 on:
   push:
     branches: [main]
+
+# permissions:
+#   id-token: write
+#   contents: read
 
 # ジョブの定義。ビルドとプッシュを一つのジョブで実行させる
 jobs:
@@ -17,6 +21,16 @@ jobs:
       # これがないと、リポジトリのコードにアクセスできないエラーでたから要る。
       - uses: actions/checkout@v3
         name: Checkout source code
+
+      # 大学側の制限により取得できない
+      
+      # # Azure CLIにログインする
+      # - name: Login to Azure CLI
+      #   uses: azure/login@v1
+      #   with:
+      #     client-id: ${{ secrets.AZURE_CLIENT_ID }}
+      #     tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+      #     subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
 
       # Dockerにログインする。ビルドとプッシュ作業の前に必要
       - name: Log in to Azure Container Registry
@@ -34,15 +48,15 @@ jobs:
           docker tag acreminder acreminder.azurecr.io/acreminder
           docker push acreminder.azurecr.io/acreminder
 
-      # Azure Container Instancesにデプロイする
-      - name: Deploy to Azure Container Instances
-        uses: 'azure/aci-deploy@v1'
-        with:
-          resource-group: ${{ secrets.RESOURCE_GROUP }}
-          dns-name-label: ${{ secrets.RESOURCE_GROUP }}${{ github.run_number }}
-          image: ${{ secrets.REGISTRY_LOGIN_SERVER }}/acreminder:latest
-          registry-login-server: ${{ secrets.REGISTRY_LOGIN_SERVER }}
-          registry-username: ${{ secrets.REGISTRY_USERNAME }}
-          registry-password: ${{ secrets.REGISTRY_PASSWORD }}
-          name: acreminder
-          location: 'japanwest'
+      # # Azure Container Instancesにデプロイする
+      # - name: Deploy to Azure Container Instances
+      #   uses: azure/aci-deploy@v1
+      #   with:
+      #     resource-group: ${{ secrets.RESOURCE_GROUP }}
+      #     dns-name-label: ${{ secrets.RESOURCE_GROUP }}${{ github.run_number }}
+      #     image: ${{ secrets.REGISTRY_LOGIN_SERVER }}/acreminder:latest
+      #     registry-login-server: ${{ secrets.REGISTRY_LOGIN_SERVER }}
+      #     registry-username: ${{ secrets.REGISTRY_USERNAME }}
+      #     registry-password: ${{ secrets.REGISTRY_PASSWORD }}
+      #     name: acreminder
+      #     location: 'japanwest'
